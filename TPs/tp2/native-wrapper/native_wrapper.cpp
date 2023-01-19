@@ -7,8 +7,6 @@
  */
 #define main __start
 
-//Comentaires
-
 /* extern "C" is needed since the software is compiled in C and
  * is linked against native_wrapper.cpp, which is compiled in C++.
  */
@@ -16,19 +14,15 @@ extern "C" int main();
 extern "C" void interrupt_handler();
 
 extern "C" void hal_write32(uint32_t addr, uint32_t data) {
-
 	NativeWrapper::get_instance()->hal_write32(addr, data);
-	
 }
 
 extern "C" unsigned int hal_read32(uint32_t addr) {
-	
 	return NativeWrapper::get_instance()->hal_read32(addr);
-
 }
 
 extern "C" void hal_cpu_relax() {
-	
+	NativeWrapper::get_instance()->hal_cpu_relax();
 }
 
 extern "C" void hal_wait_for_irq() {
@@ -51,11 +45,9 @@ NativeWrapper::NativeWrapper(sc_core::sc_module_name name) : sc_module(name),
 							     irq("irq")
 {
 	SC_THREAD(compute);
-
 	SC_METHOD(interrupt_handler_internal);
 	sensitive << irq.pos();
 	dont_initialize();
-
 	interrupt = false;
 }
 
@@ -89,6 +81,7 @@ void NativeWrapper::compute()
 
 void NativeWrapper::interrupt_handler_internal()
 {
-	interrupt = true; interrupt_event.notify();
+	interrupt = true;
+	interrupt_event.notify();
 	interrupt_handler(); /* surchargeable */
 }

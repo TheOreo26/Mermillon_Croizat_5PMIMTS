@@ -16,7 +16,7 @@ HOST_READELF = readelf
 
 INCLUDE = -I. -I../..
 
-OBJS = main.o trap.o it.o boot.o
+OBJS = main.o trap.o it.o boot.o 
 EXEC = a.out
 
 # Disassembly of the generated executable.
@@ -26,19 +26,19 @@ dump.dis: $(EXEC)
 # Summary of the sections and their size.
 sections.txt: $(EXEC)
 	$(TARGET_READELF) -S $< > $@
-	
 
-$(EXEC): $(OBJS)
-	$(TARGET_LD) -T ldscript
+
+$(EXEC): $(OBJS)# TODO: dependencies clear
+	$(TARGET_CC) -o $@ $<
+	$(TARGET_LD) -T ldscript 
 # TODO: use $(TARGET_LD), and use the -T option to point to linker script ldscript
 
-main.o: ../main.c # TODO: dependencies
-	$(TARGET_CC) $(INCLUDE) -c $< -o $@ 
-	
-# $@ = le nom de la cible donc ici main.o et $< la liste des dependances = ce qui se trouve après les ":"
+main.o: ../main.c# TODO: dependencies
+	$(TARGET_CC)  $< -o $@
+# TODO: compile with target C compiler
 
 %.o: %.s
-	$(TARGET_CC) -c $< -o $@
+	$(TARGET_CC) $< -c $@
 
 .PHONY: clean realclean
 clean:

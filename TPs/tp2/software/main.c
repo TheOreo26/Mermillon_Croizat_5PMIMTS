@@ -1210,7 +1210,7 @@ void timer_1_isr() {
 void interrupt_handler() {
 	static int count;
 	irq_received = 1;
-	count++;sc_start
+	count++;
 
 	uint32_t status = hal_read32(INTC_BASEADDR + XIN_ISR_OFFSET);
 
