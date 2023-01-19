@@ -7,6 +7,8 @@
  */
 #define main __start
 
+//Comentaires
+
 /* extern "C" is needed since the software is compiled in C and
  * is linked against native_wrapper.cpp, which is compiled in C++.
  */
